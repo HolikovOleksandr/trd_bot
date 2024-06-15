@@ -7,4 +7,8 @@ export default () => ({
     password: process.env.PG_PASSWORD,
     database: process.env.PG_DATABASE,
   },
+  binance: {
+    api: process.env.BINANCE_API_KEY,
+    secret: process.env.BINANCE_SECRET_KEY,
+  },
 });
