@@ -6,8 +6,8 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
-export class UsersService {
-  private readonly logger = new Logger(UsersService.name);
+export class UserService {
+  private readonly logger = new Logger(UserService.name);
 
   constructor(
     @InjectRepository(User)
@@ -43,7 +43,7 @@ export class UsersService {
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     const user = await this.findOne(id);
-    this.userRepository.merge(user, updateUserDto);
+    Object.assign(user, updateUserDto);
 
     try {
       await this.userRepository.save(user);
@@ -54,13 +54,13 @@ export class UsersService {
         `Failed to update user with id ${id}: ${error.message}`,
         error.stack,
       );
-      
       throw new Error(`Failed to update user with id ${id}: ${error.message}`);
     }
   }
 
   async remove(id: string): Promise<void> {
     const user = await this.findOne(id);
+    
     try {
       await this.userRepository.remove(user);
       this.logger.log(`Deleted user with id ${id}`);
